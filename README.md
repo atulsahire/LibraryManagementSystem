@@ -25,6 +25,7 @@ The system manages books, members, lendings, overdue tracking, and fines with a 
 - RESTful APIs (JSON)
 - SQL database via ORM
 - CORS enabled for frontend
+- Postgress DB
 
 ### Frontend
 - **Next.js 16** (App Router)
@@ -32,9 +33,6 @@ The system manages books, members, lendings, overdue tracking, and fines with a 
 - TypeScript
 - Tailwind CSS
 - Fetch API (no external state libraries)
-
----
-
 
 ---
 
@@ -197,7 +195,6 @@ FrontEnd
 Frontend: http://localhost:3000
 Backend: http://127.0.0.1:8000
 
-
 ## 🔮 Future Enhancements
 
 Persist fines to database
@@ -215,6 +212,8 @@ Professional, consistent UI
 Strong validation and UX
 Scalable and maintainable codebase
 It is production-ready and easy to extend.
-👤 Author: Atul Ahire
-📦 Stack: FastAPI + Next.js 16
+
+## 👤 Author: Atul Ahire
+## 📦 Stack: FastAPI + Next.js 16
+
 
