@@ -213,7 +213,8 @@ Strong validation and UX
 Scalable and maintainable codebase
 It is production-ready and easy to extend.
 
+
+---
+
 ## 👤 Author: Atul Ahire
 ## 📦 Stack: FastAPI + Next.js 16
-
-
