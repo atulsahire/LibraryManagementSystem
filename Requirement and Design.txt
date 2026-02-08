@@ -1,0 +1,300 @@
+User Story :
+
+Overview A small neighborhood library wants a new App to manage its members, books, and lending operations. You must build this service using:
+● Python for the server implementation
+● REST or gRPC with Protocol Buffers for the service interface
+● PostgreSQL as the data store
+
+Functional Requirements
+● The library needs to track:
+○ Books (title, author, etc.)
+○ Members (name, contact info, etc.)
+○ Borrowing/Returning operations (who borrowed what, when, etc.)
+
+At a minimum, your App should allow the library staff to:
+1. Create/Update records for books and members.
+2. Record when a member borrows a book.
+3. Record when a borrowed book is returned.
+4. Query or list borrowed books in some fashion (e.g., all books a certain member has out).
+
+You may include more functionality if you see fit (e.g., handling overdue books, tracking fines, due dates, etc.), but the above points are the core requirements.
+
+Your Task
+1. Design the Database Schema
+● Decide on the tables/entities you’ll need, how they relate, and what fields/columns belong in each.
+● You’ll store this data in PostgreSQL.
+2. Define the gRPC-Web Service(use REST if you are not comfortable with gRPC web)
+● Create one or more .proto files with the necessary Protobuf message types and service definitions.
+● Determine which RPC methods (and their request/response messages) are needed to support the core library operations.
+3. Implement the Python gRPC or REST API Server
+● Write Python code to spin up an API server.       
+● In each API method, interact with your PostgreSQL database (create/read/update records, etc.).
+4. Documentation/Delivery
+● Provide a short README detailing how to:
+● Set up the database (scripts or Docker instructions, etc.).
+● Generate or compile the .proto files (if needed).
+● Run the Python server (command-line steps, required libraries, environment variables).
+● Include any necessary files or folders so another developer can easily build, run, and test your service.
+5. Minimal Frontend
+● Provide web frontend by using React (next.js preferably).
+
+Evaluation Criteria
+1. Schema Design
+● Clarity, normalization, and use of relationships in PostgreSQL.
+2. Service Interface
+● How intuitive and well-structured your REST / gRPC endpoints and Protobuf messages are.
+3. Code Quality
+● Organization, readability, and maintainability of your code.
+4. Documentation
+● Ease of setup and clear explanation of how to test the service.
+
+Tip (Optional)
+● Consider adding error handling for cases like trying to borrow a book that’s already checked out.
+● Implementing validation (e.g., ensuring valid inputs for new records).
+● Show how a client might call your service (e.g., providing a sample script).
+
+
+----------------------------------------------
+
+Application High level Requirement understanding and Technical Components :-
+
+Prosona :
+    - Lender / librarian
+    - Member / Renter
+    - Admin
+
+Requirements :
+    - Desktop app to check book and member status.
+    - Home Page to show welcome message after user opens app
+    - About US
+    Book Section:
+    - A way to List down books with details like name, author, availability status
+    - A way to see book details 
+    - A way to select one or more books to Rent
+    - A way to submit request for book in advance
+    - A way to see advance rent requst status.
+    - A way to check book availablity status
+    Member Section:
+    - A way to add member
+    - A way to update member
+    - A way to delete member
+    - A way to check member status
+    - A way to block member
+    - A way to notify member.
+    Admin Section:
+    - A way for admin to check dashboard which displays inventory
+    - Settings
+
+
+Screens :
+    - Home Page
+    - Login ( optional ) - accepts uid/pwd which calls backend api to validate uid/pwd and respond with Success and appropriate message
+    - Books Section :
+        - View books
+        - Check book availability
+        - Request for book in advance 
+        - Rent available book
+        - track book advance request status.
+    - Member Section :
+        - View Member Details
+        - Check Member Active Status
+        - Check Member borrowed Pending/History list
+    - Admin :
+        - Add / Update / Delere / Search Book
+        - Add / Update / Delete / Search Member
+        - Issue Book to member
+        - Block Member
+        - Check todays OverDue book Status
+        - Check fine ammounts
+        - Notify / Reminder User
+
+Fast API (REST) :
+    Home Page Route - /home 
+    Book Api route  - /book         -- will get details of all book 
+                    - /book/{id}    -- Will get book details of specific book_id
+                    - /book/create  -- Will add book to db Table : book
+                    - @app.delete("/book/{id}")     -- will delete book with speficied book_id
+                    - @app.put("/book/{id}", response_model=Book)  -- will update book for specified book_id
+    Member Api Route  - /members         -- will get details of all members 
+                    - /member/{id}    -- Will get member details of specific member_id
+                    - /member/create  -- Will add member to db Table : member
+                    - @app.delete("/member/{id}")     -- will delete member with speficied member_id
+                    - @app.put("/member/{id}", response_model=member)  -- will update member for specified member_id
+    Lending API Route - /lending    -- will get all open lending details
+                    - /lending/{id}    -- Will get lending details of specific lending_id
+                    - /lending/create  -- Will add lending to db Table : lending
+                    - @app.delete("/lending/{id}")     -- will delete lending with speficied lending_id
+                    - @app.put("/lending/{id}", response_model=lending)  -- will update lending for specified lending_id
+                    - /lendingbybook/{book_id}  -- Will get lending details of specific book_id
+                    - /lendingbymember/{member_id}  -- Will get open lending details of specific member_id
+                    - /lendingbymemberall/{member_id}  -- Will get all lending details of specific member_id
+    Reservations API Route - /reservation    -- will get all open reservation details
+                    - /reservation/{id}    -- Will get reservation details of specific reservation_id
+                    - /reservation/create  -- Will add reservation to db Table : reservation
+                    - @app.delete("/reservation/{id}")     -- will delete reservation with speficied reservation_id
+                    - @app.put("/reservation/{id}", response_model=reservation)  -- will update reservation for specified reservation_id
+                    - /reservationbybook/{book_id}  -- Will get reservation details of specific book_id
+                    - /reservationbymember/{member_id}  -- Will get open reservation details of specific member_id
+                    - /reservationbymemberall/{member_id}  -- Will get all reservation details of specific member_id
+    Fine API Route - /fine    -- will get all open fine details
+                    - /fine/{id}    -- Will get fine details of specific fine_id
+                    - /fine/create  -- Will add fine to db Table : fine
+                    - @app.delete("/fine/{id}")     -- will delete fine with speficied fine_id
+                    - @app.put("/fine/{id}", response_model=lending)  -- will update fine for specified fine_id
+                    - /finebybook/{book_id}  -- Will get fine details of specific book_id
+                    - /finebymember/{member_id}  -- Will get open fine details of specific member_id
+                    - /finebymemberall/{member_id}  -- Will get all fine details of specific member_id
+
+Tables (Entity):
+    - books     (master)
+    - members   (master)
+    - lendings  (transaction with foreign key to book and member)
+    - fines     (transaction with foreign key to book and member)
+    - reservations  (transaction with foreign key to book and member)
+    - notification (transactional to send notification to members )
+
+Note :
+AD(s) :
+1. Use SQLAlchemy with FastAPI as you prioritize high performance, flexibility, asynchronous capabilities, and want full control over your stack.
+2. Implementing generic CRUD operations in FastAPI for multiple entities is best achieved using a Generic Repository Pattern. This approach abstracts database logic into a single base class, allowing you to reuse the same Create, Read, Update, and Delete code across all your library entities (Books, Members, etc.)
+3. Use Inheritance to keep your code DRY
+
+
+-------------------------------------
+API Samples:
+Books :-
+Create : Post : http://127.0.0.1:8000/books
+{
+  "title": "The Alchemist",
+  "author": "Paulo Coelho",
+  "isbn": "9780062315007",
+  "published_year": 1988,
+  "published_month": 5,
+  "status": "reserved"
+}
+
+Update : Put : http://127.0.0.1:8000/books/1
+{
+  "title": "The Great Gatsby",
+  "author": "F. Scott Fitzgerald",
+  "isbn": "9780743273565",
+  "published_year": 1925,
+  "published_month": 1,
+  "status": "borrowed"
+}
+
+Delete : Delete : http://127.0.0.1:8000/books/2
+
+Get 1 : Get : http://127.0.0.1:8000/books/1
+GetAll : Get : http://127.0.0.1:8000/books/
+------------
+Members :-
+Create : Post : http://127.0.0.1:8000/members
+{
+  "full_name": "Alice Johnson",
+  "joining_date": "2024-02-06",
+  "email": "alice@example.com",
+  "phone_number": "+919822767893",
+  "is_wa_applicable": true
+}
+
+Update : Put : http://127.0.0.1:8000/members/4
+{
+    "full_name": "Dr. Chin Crown",
+    "email": "m.chen@university.com",
+    "phone_number": "tel:+91-98501-11111"
+}
+
+Delete : Delete : http://127.0.0.1:8000/members/4
+
+Get 1 : Get : http://127.0.0.1:8000/members/4
+GetAll : Get : http://127.0.0.1:8000/members
+------------
+Lendings :-
+Create : Post : http://127.0.0.1:8000/lendings
+{
+  "book_id": 3,
+  "member_id": 5,
+  "borrow_date": "2024-02-01",
+  "due_date": "2024-02-15",
+  "return_date": null
+}
+
+Update : Put : http://127.0.0.1:8000/lendings/3
+{
+  "borrow_date": "2023-02-01",
+  "due_date": "2023-02-15",
+  "return_date": "2023-02-25"
+}
+
+Delete : Delete : http://127.0.0.1:8000/lendings/4
+
+Get 1 : Get : http://127.0.0.1:8000/lendings/1
+GetAll : Get : http://127.0.0.1:8000/lendings
+------------
+Fines :-
+Create : Post : http://127.0.0.1:8000/fines
+{
+  "lending_id": 1,
+  "fine_amount": 10.50,
+  "fine_date": "2024-02-06",
+  "fine_status": "unpaid"
+}
+
+Update : Put : http://127.0.0.1:8000/fines/1
+{
+  "fine_amount": 1.75,
+  "fine_status": "paid"
+}
+
+Delete : Delete : http://127.0.0.1:8000/fines/5
+
+Get 1 : Get : http://127.0.0.1:8000/fines/1
+GetAll : Get : http://127.0.0.1:8000/fines
+------------
+Reservations :-
+Create : Post : http://127.0.0.1:8000/reservations
+{
+  "member_id": 3,
+  "book_id": 5,
+  "reservation_date": "2026-02-21",
+  "reservation_status": "pending"
+}
+
+
+Update : Put : http://127.0.0.1:8000/reservations/4s
+{
+  "reservation_status": "pending"
+}
+
+Delete : Delete : http://127.0.0.1:8000/reservations/5
+
+Get 1 : Get : http://127.0.0.1:8000/reservations/1
+GetAll : Get : http://127.0.0.1:8000/reservations
+-----------------------------------------------------------------------
+
+UI : Books
+| Screen       | URL                  | File                             |
+| ------------ | -------------------- | -------------------------------- |
+| Books List | `/books`           | `app/books/page.tsx`           |
+| Add Book   | `/books/new`       | `app/books/new/page.tsx`       |
+| View Book  | `/books/[id]`      | `app/books/[id]/page.tsx`      |
+| Edit Book  | `/books/[id]/edit` | `app/books/[id]/edit/page.tsx` |
+
+UI : Members
+| Screen       | URL                  | File                             |
+| ------------ | -------------------- | -------------------------------- |
+| Members List | `/members`           | `app/members/page.tsx`           |
+| Add Member   | `/members/new`       | `app/members/new/page.tsx`       |
+| View Member  | `/members/[id]`      | `app/members/[id]/page.tsx`      |
+| Edit Member  | `/members/[id]/edit` | `app/members/[id]/edit/page.tsx` |
+
+UI : Lendings
+| Screen       | URL                  | File                             |
+| ------------ | -------------------- | -------------------------------- |
+| Lending List | `/lendings`           | `app/lendings/page.tsx`           |
+| Add Lending   | `/lendings/new`       | `app/lendings/new/page.tsx`       |
+| View Lending  | `/lendings/[id]`      | `app/lendings/[id]/page.tsx`      |
+| Edit Lending  | `/lendings/[id]/edit` | `app/lendings/[id]/edit/page.tsx` |
+
+
