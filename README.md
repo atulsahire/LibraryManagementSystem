@@ -75,10 +75,9 @@ app/
   "published_month": 6,
   "status": "available"
 }
+```
 
----
-
-Members :
+### 📘 Members
 
 API:
 | Action  | Method | Endpoint        |
@@ -89,7 +88,9 @@ API:
 | Get One | GET    | `/members/{id}` |
 | Get All | GET    | `/members`      |
 
-Member Schema:
+
+**Member Schema**
+```json
 {
   "id": 1,
   "full_name": "Alice Johnson",
@@ -98,10 +99,10 @@ Member Schema:
   "phone_number": "+919822767893",
   "is_wa_applicable": true
 }
+```
 
----
+### 📘 Lendings
 
-Lendings :
 | Action  | Method | Endpoint        |
 | ------- | ------ | --------------- |
 | Create  | POST   | `/lendings`      |
@@ -110,7 +111,8 @@ Lendings :
 | Get One | GET    | `/lendings/{id}` |
 | Get All | GET    | `/lendings`      |
 
-Lending Schema :
+**Lending Schema**
+```json
 {
   "id": 1,
   "book_id": 3,
@@ -119,10 +121,10 @@ Lending Schema :
   "due_date": "2024-02-15",
   "return_date": null
 }
+```
 
----
 
-🎨 UI Design Principles
+## 🎨 UI Design Principles
 
 Consistency – same layout across Books, Members, Lendings
 Clarity – labeled fields, required *, inline validation
@@ -173,9 +175,9 @@ Same layout as other pages
 No options available (placeholder)
 Ready for future admin features
 
----
 
-🧭 Navigation Flow
+## 🧭 Navigation Flow
+
 Home (Start)
    ↓
 Main Menu
@@ -185,9 +187,8 @@ Main Menu
    ├── Overdue Report
    └── Admin
 
----
+## 🚀 Running the Project
 
-🚀 Running the Project
 BackEnd
     uvicorn main:app --reload
 FrontEnd
@@ -196,9 +197,8 @@ FrontEnd
 Frontend: http://localhost:3000
 Backend: http://127.0.0.1:8000
 
----
 
-🔮 Future Enhancements
+## 🔮 Future Enhancements
 
 Persist fines to database
 Role-based access control
@@ -207,16 +207,14 @@ CSV / Excel exports
 Analytics & reports
 Shared reusable UI components
 
----
+## ✅ Summary
 
-✅ Summary
 This project demonstrates:
 Clean full-stack architecture
 Professional, consistent UI
 Strong validation and UX
 Scalable and maintainable codebase
 It is production-ready and easy to extend.
-👤 Author: Library Management System
+👤 Author: Atul Ahire
 📦 Stack: FastAPI + Next.js 16
 
----
