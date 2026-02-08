@@ -1,0 +1,8 @@
+library_project/
+├── app/
+│   ├── main.py          # Entry point and API routes
+│   ├── database.py      # Connection and session management
+│   ├── models.py        # SQLAlchemy database models
+│   ├── schemas.py       # Pydantic data validation schemas
+│   └── crud.py          # The Generic CRUD logic
+└── requirements.txt
