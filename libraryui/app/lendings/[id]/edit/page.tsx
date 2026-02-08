@@ -30,7 +30,6 @@ export default function EditLendingPage() {
   const [members, setMembers] = useState<Member[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  // ✅ Initialized → controlled
   const [form, setForm] = useState<LendingForm>({
     book_id: "",
     member_id: "",
@@ -40,7 +39,6 @@ export default function EditLendingPage() {
   });
 
   useEffect(() => {
-    // Load dropdown data
     fetch("http://127.0.0.1:8000/books")
       .then((res) => res.json())
       .then(setBooks);
@@ -49,7 +47,6 @@ export default function EditLendingPage() {
       .then((res) => res.json())
       .then(setMembers);
 
-    // Load existing lending
     fetch(`http://127.0.0.1:8000/lendings/${id}`)
       .then((res) => res.json())
       .then((data) =>
@@ -74,12 +71,10 @@ export default function EditLendingPage() {
     if (!form.member_id) return "Member is required";
     if (!form.borrow_date) return "Borrow date is required";
     if (!form.due_date) return "Due date is required";
-    if (form.due_date < form.borrow_date) {
+    if (form.due_date < form.borrow_date)
       return "Due date cannot be before borrow date";
-    }
-    if (form.return_date && form.return_date < form.borrow_date) {
+    if (form.return_date && form.return_date < form.borrow_date)
       return "Return date cannot be before borrow date";
-    }
     return null;
   };
 
@@ -144,7 +139,7 @@ export default function EditLendingPage() {
               >
                 {b.title}
                 {b.status === "borrowed" &&
-                  String(b.id) !== form.book_id
+                String(b.id) !== form.book_id
                   ? " (Borrowed)"
                   : ""}
               </option>
@@ -218,6 +213,31 @@ export default function EditLendingPage() {
           Fields marked with <span className="text-red-600">*</span> are required
         </p>
 
+        {/* 🔹 ACTION BUTTONS (MATCH BOOK EDIT) */}
+        <div className="flex gap-4 pt-4">
+          <button
+            type="submit"
+            className="px-4 py-2 bg-blue-600 text-white rounded-xl"
+          >
+            Save
+          </button>
+
+          <button
+            type="button"
+            onClick={() => router.push("/lendings")}
+            className="px-4 py-2 border rounded-xl"
+          >
+            Back to List
+          </button>
+
+          <button
+            type="button"
+            onClick={() => router.push("/dashboard")}
+            className="px-4 py-2 border rounded-xl"
+          >
+            Back to Menu
+          </button>
+        </div>
       </form>
     </main>
   );
