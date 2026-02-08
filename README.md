@@ -75,7 +75,9 @@ app/
   "published_month": 6,
   "status": "available"
 }
-----------
+
+---
+
 Members :
 
 API:
@@ -97,7 +99,8 @@ Member Schema:
   "is_wa_applicable": true
 }
 
-------
+---
+
 Lendings :
 | Action  | Method | Endpoint        |
 | ------- | ------ | --------------- |
@@ -117,7 +120,8 @@ Lending Schema :
   "return_date": null
 }
 
-------
+---
+
 🎨 UI Design Principles
 
 Consistency – same layout across Books, Members, Lendings
@@ -169,6 +173,8 @@ Same layout as other pages
 No options available (placeholder)
 Ready for future admin features
 
+---
+
 🧭 Navigation Flow
 Home (Start)
    ↓
@@ -179,6 +185,8 @@ Main Menu
    ├── Overdue Report
    └── Admin
 
+---
+
 🚀 Running the Project
 BackEnd
     uvicorn main:app --reload
@@ -187,6 +195,8 @@ FrontEnd
     npm run dev
 Frontend: http://localhost:3000
 Backend: http://127.0.0.1:8000
+
+---
 
 🔮 Future Enhancements
 
@@ -197,6 +207,8 @@ CSV / Excel exports
 Analytics & reports
 Shared reusable UI components
 
+---
+
 ✅ Summary
 This project demonstrates:
 Clean full-stack architecture
@@ -206,3 +218,5 @@ Scalable and maintainable codebase
 It is production-ready and easy to extend.
 👤 Author: Library Management System
 📦 Stack: FastAPI + Next.js 16
+
+---
