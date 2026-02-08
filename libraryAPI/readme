@@ -6,3 +6,5 @@ library_project/
 │   ├── schemas.py       # Pydantic data validation schemas
 │   └── crud.py          # The Generic CRUD logic
 └── requirements.txt
+
+Run :     uvicorn main:app --reload
