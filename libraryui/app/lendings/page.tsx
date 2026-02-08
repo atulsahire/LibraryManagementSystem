@@ -12,8 +12,21 @@ interface Lending {
   return_date: string | null;
 }
 
+interface Book {
+  id: number;
+  title: string;
+}
+
+interface Member {
+  id: number;
+  full_name: string;
+}
+
 export default function LendingsPage() {
   const [lendings, setLendings] = useState<Lending[]>([]);
+  const [books, setBooks] = useState<Book[]>([]);
+  const [members, setMembers] = useState<Member[]>([]);
+
   const [search, setSearch] = useState("");
   const [sortKey, setSortKey] = useState<keyof Lending>("borrow_date");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
@@ -22,6 +35,14 @@ export default function LendingsPage() {
 
   useEffect(() => {
     fetchLendings();
+
+    fetch("http://127.0.0.1:8000/books")
+      .then((res) => res.json())
+      .then(setBooks);
+
+    fetch("http://127.0.0.1:8000/members")
+      .then((res) => res.json())
+      .then(setMembers);
   }, []);
 
   const fetchLendings = async () => {
@@ -40,14 +61,26 @@ export default function LendingsPage() {
     fetchLendings();
   };
 
-  // 🔍 Search
-  const filtered = lendings.filter((l) =>
-    `${l.book_id} ${l.member_id}`
-      .toLowerCase()
-      .includes(search.toLowerCase())
+  /* 🔹 Lookup maps (O(1)) */
+  const bookMap = Object.fromEntries(
+    books.map((b) => [b.id, b.title])
   );
 
-  // 🔃 Sort
+  const memberMap = Object.fromEntries(
+    members.map((m) => [m.id, m.full_name])
+  );
+
+  /* 🔍 Search (IDs + Names) */
+  const filtered = lendings.filter((l) => {
+    const bookText = `${l.book_id} ${bookMap[l.book_id] ?? ""}`;
+    const memberText = `${l.member_id} ${memberMap[l.member_id] ?? ""}`;
+
+    return `${bookText} ${memberText}`
+      .toLowerCase()
+      .includes(search.toLowerCase());
+  });
+
+  /* 🔃 Sort */
   const sorted = [...filtered].sort((a, b) => {
     const aVal = String(a[sortKey] ?? "");
     const bVal = String(b[sortKey] ?? "");
@@ -56,7 +89,7 @@ export default function LendingsPage() {
       : bVal.localeCompare(aVal);
   });
 
-  // 📄 Pagination
+  /* 📄 Pagination */
   const totalPages = Math.ceil(sorted.length / pageSize);
   const paginated = sorted.slice(
     (page - 1) * pageSize,
@@ -86,12 +119,12 @@ export default function LendingsPage() {
         </div>
       </div>
 
-      {/* 🔹 Controls (MATCH BOOKS EXACTLY) */}
+      {/* 🔹 Controls */}
       <div className="bg-white p-4 rounded-xl shadow mb-4">
         <div className="flex flex-wrap items-center gap-4">
           <input
             type="text"
-            placeholder="Search book or member ID"
+            placeholder="Search book or member"
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -143,8 +176,8 @@ export default function LendingsPage() {
         <table className="w-full border-collapse">
           <thead className="bg-slate-200">
             <tr>
-              <th className="p-3 text-left">Book ID</th>
-              <th className="p-3 text-left">Member ID</th>
+              <th className="p-3 text-left">Book</th>
+              <th className="p-3 text-left">Member</th>
               <th className="p-3 text-left">Borrow Date</th>
               <th className="p-3 text-left">Due Date</th>
               <th className="p-3 text-left">Return Date</th>
@@ -155,13 +188,30 @@ export default function LendingsPage() {
           <tbody>
             {paginated.map((l) => (
               <tr key={l.id} className="border-t">
-                <td className="p-3">{l.book_id}</td>
-                <td className="p-3">{l.member_id}</td>
+                <td className="p-3">
+                  <div className="font-medium">
+                    {bookMap[l.book_id] ?? "Unknown Book"}
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    ID: {l.book_id}
+                  </div>
+                </td>
+
+                <td className="p-3">
+                  <div className="font-medium">
+                    {memberMap[l.member_id] ?? "Unknown Member"}
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    ID: {l.member_id}
+                  </div>
+                </td>
+
                 <td className="p-3">{l.borrow_date}</td>
                 <td className="p-3">{l.due_date}</td>
                 <td className="p-3">
                   {l.return_date ?? "-"}
                 </td>
+
                 <td className="p-3 space-x-3">
                   <Link
                     href={`/lendings/${l.id}`}
@@ -198,7 +248,7 @@ export default function LendingsPage() {
         </table>
       </div>
 
-      {/* 🔹 Pagination (CENTERED like Books) */}
+      {/* 🔹 Pagination */}
       <div className="mt-4 flex justify-center gap-2">
         <button
           disabled={page === 1}
