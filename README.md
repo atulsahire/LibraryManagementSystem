@@ -39,12 +39,19 @@ The system manages books, members, lendings, overdue tracking, and fines with a 
 ## 📂 Project Structure
 
 app/
+
 ├── page.tsx # Home / Start page
+
 ├── dashboard/ # Main Menu + Overdue Report
+
 ├── books/ # Books list, add, edit, view
+
 ├── members/ # Members list, add, edit, view
+
 ├── lendings/ # Lendings list, add, edit, view
+
 ├── admin/ # Admin placeholder page
+
 └── layout.tsx
 
 
@@ -218,3 +225,4 @@ It is production-ready and easy to extend.
 
 ## 👤 Author: Atul Ahire
 ## 📦 Stack: FastAPI + Next.js 16
+
